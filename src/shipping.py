@@ -7,6 +7,6 @@ def shipping_fee(weight_kg, express=False):
     fee = 50 if weight_kg <= 2 else 100
 
     if express:
-        fee += 50
+        fee = fee / 2
 
     return fee
