@@ -1,0 +1,23 @@
+name: ReflexiCode-Guard PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: reflexicode-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  security-ai-review:
+    name: ReflexiCode-Guard Automated Security & AI Review
+    runs-on: [self-hosted, windows]
+    steps:
+      - name: Check out PR code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Execute ReflexiCode-Guard Pipeline
+        run: |
+          C:\Users\DELL\.gemini\antigravity\scratch\ReflexiCode-Guard\.venv\Scripts\python.exe C:\Users\DELL\.gemini\antigravity\scratch\ReflexiCode-Guard\scripts\run_pr_review_action.py --repo ${{ github.repository }} --pr-number ${{ github.event.pull_request.number }} --commit ${{ github.event.pull_request.head.sha }}
